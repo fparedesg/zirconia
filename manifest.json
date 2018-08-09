@@ -1,0 +1,28 @@
+{
+    "name": "Zirconia",
+    "author": "Federico Paredes",
+    "version": "1.0",
+    "description": "Enables tab previews when you hover over the area below tabs.",
+    "permissions": ["tabs", "activeTab", "storage", "<all_urls>", "http://*/*", "https://*/*"],
+
+    "icons": {
+        "128": "img/icon128.png"
+    },
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+
+    "content_scripts": [
+    {
+        "matches": [
+            "http://*/*",
+            "https://*/*"
+        ],
+        "js": ["vendor/jquery.js", "client-zirconia.js"]
+    }],
+
+    "options_page": "options.html",
+    "manifest_version": 2
+}
