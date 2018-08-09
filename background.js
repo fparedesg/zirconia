@@ -27,12 +27,12 @@ function init() {
             defaultSettings.tabPreviewRatio = 0.1;
         }
         // If there is any default value to set, do it. Otherwise, all settings have already been set.
-        if(Object.keys(defaultSettings).length === 0) {
+        if(Object.keys(defaultSettings).length !== 0) {
             chrome.storage.sync.set(defaultSettings);
         }
         // Save for usage in below functions.
-        updateRate = data.updateRate;
-        tabPreviewRatio = data.tabPreviewRatio;
+        updateRate = data.updateRate || defaultSettings.updateRate;
+        tabPreviewRatio = data.tabPreviewRatio || defaultSettings.tabPreviewRatio;
         
         // Update the tab screenshot every time we create tabs.
         chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
@@ -81,7 +81,7 @@ function init() {
                     }
                 }
 
-                chrome.tabs.captureVisibleTab({format: "jpeg", quality: 100*tabPreviewRatio}, function(dataUrl) {
+                chrome.tabs.captureVisibleTab({format: "jpeg", quality: Math.round(100*tabPreviewRatio)}, function(dataUrl) {
                     tabScreenshots[currentTabId] = dataUrl;
                     chrome.storage.local.set({tabScreenshots, tabOrder}, callback);
                 });
