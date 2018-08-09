@@ -66,7 +66,14 @@ function init() {
 
         // Updates the order of the tabs, gets a screenshot of the current active tab, and saves it to our dictionary.
         function GetTabScreenshot(callback) {
-            chrome.tabs.query({ currentWindow: true }, function(tabs) {        
+            chrome.tabs.query({ currentWindow: true }, function(tabs) {
+                // Abort if the user is currently not focused on any window.
+                if(tabs.length == 0) {
+                    if(callback) callback();
+                    return;
+                }
+
+                // Loop through all the tabs in the current window, store their order, and determine which one is active.
                 let currentTabId = -1;
                 tabOrder = [];
                 for(tab of tabs) {
@@ -81,6 +88,7 @@ function init() {
                     }
                 }
 
+                // Get a screenshot of the active tab and store it.
                 chrome.tabs.captureVisibleTab({format: "jpeg", quality: Math.round(100*tabPreviewRatio)}, function(dataUrl) {
                     tabScreenshots[currentTabId] = dataUrl;
                     chrome.storage.local.set({tabScreenshots, tabOrder}, callback);
