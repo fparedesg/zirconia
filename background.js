@@ -5,8 +5,8 @@ let tabOrder = [];
 let updateRate = "";
 let tabPreviewRatio = 0;
 
-chrome.runtime.onInstalled.addListener(init);
-chrome.runtime.onStartup.addListener(init);
+// chrome.runtime.onInstalled.addListener(init);
+// chrome.runtime.onStartup.addListener(init);
 
 function init() {
     // Get the possible settings from storage to see if they have already been set before.
@@ -98,3 +98,5 @@ function init() {
         
     });
 }
+
+init();
